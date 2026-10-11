@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 18th Birthday, EMAN! ✨ 🎉</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- FontAwesome & Google Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Nunito:wght@300;400;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #fff0f6 0%, #f4e8ff 50%, #fef3c7 100%);
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --accent-pink: #ec4899;
+            --accent-gold: #f59e0b;
+            --text-dark: #1e293b;
+            --glow-color: rgba(201, 117, 159, 0.3);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-dark);
+            font-family: 'Nunito', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-cursive { font-family: 'Great Vibes', cursive; }
+        .font-handwriting { font-family: 'Dancing Script', cursive; }
+        .font-serif-title { font-family: 'Playfair Display', serif; }
+
+        /* Glassmorphism styling */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06), 0 0 25px var(--glow-color);
+        }
+
+        /* Grand Surprise Curtain / Intro Overlay */
+        #introOverlay {
+            background: radial-gradient(circle at center, #4d123f 0%, #1d0518 100%);
+            transition: opacity 1s ease-out, visibility 1s ease-out;
+        }
+
+        .gift-box-glow {
+            filter: drop-shadow(0 0 35px rgba(236, 72, 153, 0.8));
+            animation: giftPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes giftPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.08) rotate(3deg); }
+        }
+
+        /* Candle Flame Physics */
+        .flame {
+            background: radial-gradient(ellipse at bottom, #ffeb3b 0%, #ff9800 60%, #f44336 100%);
+            border-radius: 50% 50% 20% 20%;
+            width: 14px;
+            height: 24px;
+            position: absolute;
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: flicker 0.8s infinite alternate ease-in-out;
+            box-shadow: 0 0 12px #ff9800, 0 0 22px #ffeb3b;
+        }
+
+        .flame.out { display: none !important; }
+
+        .smoke {
+            position: absolute;
+            top: -28px;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: rgba(200, 200, 200, 0.8);
+            border-radius: 50%;
+            animation: smokeRise 2s forwards ease-out;
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1) rotate(-3deg); opacity: 0.95; }
+            100% { transform: translateX(-50%) scale(1.15) rotate(3deg); opacity: 1; }
+        }
+
+        @keyframes smokeRise {
+            0% { transform: translate(-50%, 0) scale(1); opacity: 0.8; }
+            100% { transform: translate(-50%, -50px) scale(4); opacity: 0; }
+        }
+
+        /* Polaroid Photo Card styling */
+        .polaroid {
+            background: #ffffff;
+            padding: 12px 12px 24px 12px;
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            transform: rotate(var(--rot));
+        }
+
+        .polaroid:hover {
+            transform: scale(1.05) rotate(0deg) translateY(-5px);
+            box-shadow: 0 20px 35px rgba(236, 72, 153, 0.25);
+            z-index: 20;
+        }
+
+        /* Floating Sparkle Trail */
+        .sparkle-trail {
+            position: fixed;
+            pointer-events: none;
+            font-size: 18px;
+            animation: floatFade 1.2s forwards linear;
+            z-index: 9999;
+        }
+
+        @keyframes floatFade {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.2); }
+        }
+
+        /* Shimmer Glow Animation */
+        .shimmer-text {
+            background: linear-gradient(90deg, #ec4899, #f59e0b, #8b5cf6, #ec4899);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 4s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        .card-wish-pink { background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%); }
+        .card-wish-purple { background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); }
+        .card-wish-yellow { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); }
+        .card-wish-blue { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen relative">
+
+    <div id="introOverlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 text-center text-white">
+        <div class="max-w-lg w-full flex flex-col items-center gap-6">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-amber-300 text-xs sm:text-sm font-extrabold uppercase tracking-widest border border-white/20">
+                <span>✨ A Surprise Awaits ✨</span>
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl font-black font-serif-title text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-rose-200 to-amber-200">
+                For EMAN
+            </h1>
+
+            <p class="text-sm sm:text-base text-rose-100/80 font-medium max-w-md">
+                Something extraordinary has been crafted specially for your 18th Birthday celebration!
+            </p>
+
+            <!-- Clickable Gift Box Container -->
+            <div onclick="revealSurprise()" class="gift-box-glow cursor-pointer my-6 group transition hover:scale-110">
+                <div class="relative w-40 h-40 flex items-center justify-center bg-gradient-to-tr from-pink-600 to-rose-400 rounded-3xl shadow-2xl border-2 border-amber-300">
+                    <span class="text-7xl group-hover:animate-bounce">🎁</span>
+                    <div class="absolute inset-x-0 bottom-3 text-xs font-black tracking-widest uppercase text-amber-200">TAP TO OPEN</div>
+                </div>
+            </div>
+
+            <button onclick="revealSurprise()" class="px-8 py-4 rounded-full bg-gradient-to-r from-pink-500 to-amber-500 hover:from-pink-600 hover:to-amber-600 text-white font-extrabold shadow-xl text-base tracking-wide transition transform hover:scale-105 active:scale-95">
+                🎉 Open EMAN's Birthday Surprise 🎉
+            </button>
+        </div>
+    </div>
+
+    <header class="p-4 flex justify-between items-center max-w-6xl mx-auto w-full z-40">
+        <div class="flex items-center gap-2 bg-white/70 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/80 shadow-sm">
+            <span class="text-2xl">👑</span>
+            <span class="font-black text-sm sm:text-base tracking-wide text-rose-600">EMAN's 18th Celebration</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <!-- Music Synthesizer Toggle -->
+            <button id="musicBtn" onclick="toggleAudio()" class="px-4 py-2 rounded-full bg-white/80 hover:bg-white text-slate-800 font-bold shadow-md transition flex items-center gap-2 text-xs sm:text-sm border border-rose-200">
+                <i class="fas fa-music text-rose-500 animate-bounce"></i>
+                <span id="musicText">Play Music</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-5xl mx-auto w-full px-4 py-4 flex flex-col gap-10 z-10">
+
+        <!-- Banner Header Section -->
+        <section class="glass-card rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden">
+            <div class="absolute -right-8 -top-8 text-8xl opacity-10 pointer-events-none">✨</div>
+            <div class="absolute -left-8 -bottom-8 text-8xl opacity-10 pointer-events-none">🌸</div>
+
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 text-rose-600 text-xs sm:text-sm font-extrabold uppercase tracking-widest mb-4 border border-rose-200 shadow-sm">
+                <span>🎂 Official 18th Birthday Milestone • 1/10/2008 🎂</span>
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight mb-3">
+                Happy Birthday, <br class="sm:hidden"/>
+                <span class="shimmer-text font-cursive drop-shadow-md px-2">EMAN</span>! 🎉
+            </h1>
+
+            <p class="text-sm sm:text-base font-medium max-w-xl mx-auto opacity-80 mt-1">
+                Celebrating an extraordinary person born on <strong class="text-rose-600">October 1, 2008</strong>. Entering 18 with grace, brilliance, and magic! 👑✨
+            </p>
+
+            <!-- Dynamic Live Stats Widget -->
+            <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto">
+                <div class="p-3 rounded-2xl bg-white/70 border border-white/90 shadow-sm flex flex-col items-center">
+                    <span class="text-2xl sm:text-3xl font-black text-rose-500">18</span>
+                    <span class="text-xs font-bold opacity-70 uppercase tracking-wider">Years Old</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-white/70 border border-white/90 shadow-sm flex flex-col items-center">
+                    <span id="daysCount" class="text-2xl sm:text-3xl font-black text-purple-600">6,574</span>
+                    <span class="text-xs font-bold opacity-70 uppercase tracking-wider">Days of Magic</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-white/70 border border-white/90 shadow-sm flex flex-col items-center">
+                    <span id="countdownDays" class="text-2xl sm:text-3xl font-black text-amber-500">--</span>
+                    <span class="text-xs font-bold opacity-70 uppercase tracking-wider">Days to Oct 1st</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-white/70 border border-white/90 shadow-sm flex flex-col items-center">
+                    <span class="text-2xl sm:text-3xl font-black text-emerald-500">100%</span>
+                    <span class="text-xs font-bold opacity-70 uppercase tracking-wider">Pure Brilliance</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-card rounded-3xl p-6 sm:p-10 text-center flex flex-col items-center justify-between min-h-[420px]">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-bold mb-1 flex items-center justify-center gap-2 text-slate-800">
+                    <span>Make Your 18th Birthday Wish, EMAN!</span> 🌠
+                </h2>
+                <p class="text-xs sm:text-sm opacity-75">Click on the cake or blow out the candles to reveal your secret birthday fortune!</p>
+            </div>
+
+            <!-- Custom Interactive 3D Cake -->
+            <div id="cakeContainer" class="my-8 relative cursor-pointer group" onclick="blowOutCandles()">
+                <div class="relative w-56 h-44 mx-auto flex flex-col justify-end items-center">
+                    
+                    <!-- Cake Top Layer with Candles -->
+                    <div class="w-36 h-14 bg-pink-300 rounded-t-3xl relative border-b-4 border-pink-400 flex justify-center shadow-inner">
+                        <div class="absolute -top-4 w-full flex justify-around px-4">
+                            <!-- Candle 1 -->
+                            <div class="relative w-3.5 h-8 bg-amber-200 rounded-sm shadow-sm">
+                                <div id="flame1" class="flame"></div>
+                            </div>
+                            <!-- Candle 2 (Center) -->
+                            <div class="relative w-3.5 h-9 bg-purple-200 rounded-sm shadow-sm -mt-1">
+                                <div id="flame2" class="flame"></div>
+                            </div>
+                            <!-- Candle 3 -->
+                            <div class="relative w-3.5 h-8 bg-sky-200 rounded-sm shadow-sm">
+                                <div id="flame3" class="flame"></div>
+                            </div>
+                        </div>
+
+                        <!-- Frosting drips -->
+                        <div class="absolute bottom-0 left-0 w-full flex justify-between px-1">
+                            <div class="w-4 h-4 bg-white rounded-full"></div>
+                            <div class="w-5 h-6 bg-white rounded-full"></div>
+                            <div class="w-4 h-4 bg-white rounded-full"></div>
+                            <div class="w-5 h-7 bg-white rounded-full"></div>
+                            <div class="w-4 h-4 bg-white rounded-full"></div>
+                        </div>
+                    </div>
+
+                    <!-- Cake Middle Layer -->
+                    <div class="w-44 h-16 bg-rose-400 relative border-b-4 border-rose-500 flex justify-around items-center px-4 shadow-sm">
+                        <div class="w-3 h-3 rounded-full bg-amber-200"></div>
+                        <div class="w-3 h-3 rounded-full bg-white"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-200"></div>
+                        <div class="w-3 h-3 rounded-full bg-white"></div>
+                    </div>
+
+                    <!-- Cake Bottom Layer -->
+                    <div class="w-56 h-18 bg-amber-100 rounded-b-2xl relative border-b-4 border-amber-200 shadow-md flex justify-center items-center">
+                        <div class="text-xs tracking-widest text-amber-800 font-extrabold opacity-80">EMAN • 18TH CELEBRATION</div>
+                    </div>
+
+                    <!-- Cake Plate -->
+                    <div class="w-64 h-4 bg-slate-300 rounded-full shadow-lg -mb-2"></div>
+                </div>
+            </div>
+
+            <div class="w-full max-w-md">
+                <button id="blowBtn" onclick="blowOutCandles()" class="w-full py-3.5 rounded-2xl bg-rose-500 hover:bg-rose-600 text-white font-extrabold shadow-lg shadow-rose-500/30 transition hover:-translate-y-0.5 active:translate-y-0 text-sm">
+                    💨 Click to Blow Candles & Grant Wish
+                </button>
+                <p id="wishStatus" class="text-sm text-rose-600 font-bold mt-3 hidden animate-pulse">✨ Your wish has been granted for EMAN! ✨</p>
+            </div>
+        </section>
+
+        <section class="glass-card rounded-3xl p-6 sm:p-10">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 flex items-center gap-2">
+                        <span>EMAN's Photo Memories Wall</span> 📸
+                    </h2>
+                    <p class="text-xs sm:text-sm opacity-75">Precious moments, bright smiles, and unforgettable memories!</p>
+                </div>
+
+                <!-- Custom Photo Loader Button -->
+                <label class="cursor-pointer px-4 py-2.5 rounded-2xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs sm:text-sm shadow-md transition flex items-center gap-2">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add Custom Photo</span>
+                    <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="uploadCustomPhoto(event)">
+                </label>
+            </div>
+
+            <div id="photoGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
+                <!-- Polaroid 1 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: -2deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="0.jpeg" alt="Eman Birthday Sparkle" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        18 & Fabulous 👑
+                    </div>
+                </div>
+
+                <!-- Polaroid 2 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: 2deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="00.jpeg" alt="Eman Joyful Celebration" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        Brightest Smile ✨
+                    </div>
+                </div>
+
+                <!-- Polaroid 3 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: -1deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="000.jpeg" alt="Eman Best Friends" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        Unforgettable Times 💖
+                    </div>
+                </div>
+                <!-- Polaroid 4 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: -1deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="1.jpeg" alt="Eman Best Friends" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        18 & Fabulous 👑
+                    </div>
+                </div>
+                <!-- Polaroid 5 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: -1deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="2.jpeg" alt="Eman Best Friends" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        Brightest Smile ✨
+                    </div>
+                </div>
+                <!-- Polaroid 6 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: -1deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="3.jpeg" alt="Eman Best Friends" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        Unforgettable Times 💖
+                    </div>
+                </div>
+                <!-- Polaroid 7 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: -1deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="4.jpeg" alt="Eman Best Friends" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        18 & Fabulous 👑
+                    </div>
+                </div>
+                <!-- Polaroid 8 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: -1deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="5.jpeg" alt="Eman Best Friends" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        Brightest Smile ✨
+                    </div>
+                </div>
+                <!-- Polaroid 9 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: -1deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="6.jpeg" alt="Eman Best Friends" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        Unforgettable Times 💖
+                    </div>
+                </div>
+                <!-- Polaroid 10 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: -1deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="7.jpeg" alt="Eman Best Friends" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        18 & Fabulous 👑
+                    </div>
+                </div>
+                <!-- Polaroid 11 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: -1deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="8.jpeg" alt="Eman Best Friends" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        Brightest Smile ✨
+                    </div>
+                </div>
+                <!-- Polaroid 12 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: -1deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="9.jpeg" alt="Eman Best Friends" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        Unforgettable Times 💖
+                    </div>
+                </div>
+                <!-- Polaroid 13 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: -1deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="10.jpeg" alt="Eman Best Friends" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        18 & Fabulous 👑
+                    </div>
+                    
+                </div>
+                <!-- Polaroid 13 -->
+                <div class="polaroid rounded-2xl w-full max-w-xs" style="--rot: -1deg;">
+                    <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                        <img src="11.jpeg" alt="Eman Best Friends" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                        Brightest Smile ✨
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-card rounded-3xl p-6 sm:p-10 border-2 border-rose-200">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 flex items-center gap-2">
+                        <span>Friends' Birthday Wishes Wall</span> 💌
+                    </h2>
+                    <p class="text-xs sm:text-sm opacity-75">Messages and love posted by EMAN's best friends!</p>
+                </div>
+
+                <button onclick="toggleWishForm()" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-extrabold text-xs sm:text-sm shadow-md transition flex items-center gap-2">
+                    <i class="fas fa-pen-nib"></i>
+                    <span>+ Write a Wish Card</span>
+                </button>
+            </div>
+
+            <!-- Add Wish Form Modal / Expandable Card -->
+            <div id="wishFormContainer" class="hidden mb-8 p-6 rounded-2xl bg-white/90 border border-rose-200 shadow-md">
+                <h3 class="text-lg font-bold mb-4 text-slate-800">Add Your Special Wish Card for EMAN</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <input type="text" id="friendName" placeholder="Your Name" class="p-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400">
+                    <select id="cardColor" class="p-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400">
+                        <option value="pink">Pink Card 🌸</option>
+                        <option value="purple">Purple Card 🔮</option>
+                        <option value="yellow">Golden Card ☀️</option>
+                        <option value="blue">Sky Blue Card 🌊</option>
+                    </select>
+                </div>
+                <textarea id="friendMessage" rows="3" placeholder="Write your heartfelt message for EMAN..." class="w-full p-3 rounded-xl border border-slate-200 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-rose-400"></textarea>
+                <div class="flex justify-end gap-3">
+                    <button onclick="toggleWishForm()" class="px-4 py-2 rounded-xl bg-slate-200 text-slate-700 text-xs font-bold">Cancel</button>
+                    <button onclick="postWishCard()" class="px-6 py-2 rounded-xl bg-rose-500 text-white text-xs font-bold shadow-md">Post Wish Card 🎉</button>
+                </div>
+            </div>
+
+            <!-- Dynamic Wishes Grid -->
+            <div id="wishesGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                
+               
+
+                <!-- Pre-filled Wish Card 3 -->
+                <div class="card-wish-yellow p-6 rounded-2xl shadow-sm border border-white/60 relative flex flex-col justify-between min-h-[160px]">
+                    <div>
+                        <div class="text-xs font-black text-amber-700 uppercase tracking-wider mb-2">From Malak 🌟</div>
+                        <p class="text-sm text-slate-800 font-medium leading-relaxed">
+                            "كل سنة وانت طيبة يا ايمان عقبال سنة سعيدة عليكي يا رب تكون كلها انجازات سعيدة و سهلة عليكي اتمني ديما تكون بخير و فرحانه و اي صعوبات رح توجهيها قدام تكون سهله عليكي يا رب من صحبتك ملك 🌺"
+                        </p>
+                    </div>
+                    <div class="text-right text-xs font-bold opacity-60 mt-4">Oct 1st • Forever Friends</div>
+                </div>
+                <!-- Pre-filled Wish Card 3 -->
+                <div class="card-wish-pink p-6 rounded-2xl shadow-sm border border-white/60 relative flex flex-col justify-between min-h-[160px]">
+                    <div>
+                        <div class="text-xs font-black text-amber-700 uppercase tracking-wider mb-2">From Haneen 🌟</div>
+                        <p class="text-sm text-slate-800 font-medium leading-relaxed">
+                            "كل سنه وانتي طيبه يا احلى موني ف الدنيا 🥰🎊
+انتي بجد من احلى الناس اللى طلعت بيها من المدرسه 😍😘
+بتفائل اوي بضحكتك عمتا ودمك الخفيف 🫠🌚
+وبحب انكشك ع طول يا موني 😘😘
+بحبككككككك موتتتتت 😘😘😘"
+                        </p>
+                    </div>
+                    <div class="text-right text-xs font-bold opacity-60 mt-4">Oct 1st • Forever Friends</div>
+                </div>
+                <!-- Pre-filled Wish Card 3 -->
+                <div class="card-wish-pink p-6 rounded-2xl shadow-sm border border-white/60 relative flex flex-col justify-between min-h-[160px]">
+                    <div>
+                        <div class="text-xs font-black text-amber-700 uppercase tracking-wider mb-2">From nour 🌟</div>
+                        <p class="text-sm text-slate-800 font-medium leading-relaxed">
+                            " كل سنه وانتي طيبه ي كوتييي وعقبال سنين كتير يارب وتحققي كل اللي بتتمنيه واشوفك اشطر بروجرامنج ف الدنيا وتخشي الكليه اللي بحبيها وتبقى اشطر كتكوتههه 
+*Happy birthday to the most cutesttt girl everr💕💕🌟*"
+                        </p>
+                    </div>
+                    <div class="text-right text-xs font-bold opacity-60 mt-4">Oct 1st • Forever Friends</div>
+                </div>
+                <!-- Pre-filled Wish Card 3 -->
+                <div class="card-wish-blue p-6 rounded-2xl shadow-sm border border-white/60 relative flex flex-col justify-between min-h-[160px]">
+                    <div>
+                        <div class="text-xs font-black text-amber-700 uppercase tracking-wider mb-2">From BATOTA(: 🌟</div>
+                        <p class="text-sm text-slate-800 font-medium leading-relaxed">
+                            " كل سنه وانتي طيبه يا يامووو وعقبال مليون سنه ياورحي
+مش عارفه ازي كتكوت الشله اكبر واحد فينا بس اشطا 
+ان شاء الله تكوني السنه الجاية في المكان الي بتحلمي بيه والكلية الي نفسك فيها 🥹💞🫂"
+                        </p>
+                    </div>
+                    <div class="text-right text-xs font-bold opacity-60 mt-4">Oct 1st • Forever Friends</div>
+                </div>
+                <!-- Pre-filled Wish Card 3 -->
+                <div class="card-wish-yellow p-6 rounded-2xl shadow-sm border border-white/60 relative flex flex-col justify-between min-h-[160px]">
+                    <div>
+                        <div class="text-xs font-black text-amber-700 uppercase tracking-wider mb-2">From MANAR 🌟</div>
+                        <p class="text-sm text-slate-800 font-medium leading-relaxed">
+                            "كل سنه وانتي طيبه ي ميمو ويارب اشوفك اشطر وأحسن باشمهندسه برمجه ف الدنيا ي حبيبي وبتمنالك الجاى كله يكون خير وسعاده ليكي🫶🏻 كنا أقرب حد لبعض وجت فتره كانت وحشه أوي وبعدنا اه بس الحمد لله إحنا دلوقتي رجعنا وبقينا مع بعض تاني يمكن كان مفروض نفهم بعض اكتر والمشاكل دي حصلت علشان نقرب اكتر مش نبعد 
+بجد من اكتر الناس الجميله إللي اتعاملت معاها وانضفهم بصراحه 🫂😂 بتمنى نفضل العمر كله مع بعض 🫂❤️❤️"
+                        </p>
+                    </div>
+                    <div class="text-right text-xs font-bold opacity-60 mt-4">Oct 1st • Forever Friends</div>
+                </div>
+                <!-- Pre-filled Wish Card 3 -->
+                <div class="card-wish-blue p-6 rounded-2xl shadow-sm border border-white/60 relative flex flex-col justify-between min-h-[160px]">
+                    <div>
+                        <div class="text-xs font-black text-amber-700 uppercase tracking-wider mb-2">From SOMAYA 🌟</div>
+                        <p class="text-sm text-slate-800 font-medium leading-relaxed">
+                            " كل سنه وانتي طيبه يا ايمو وعقبال متكوني جده وعندك اطفال كتيرر ويقرفو الي جابوكي  كبرتي ي بيضه بقيتي 18 سنه يلا اتجوزي واخلصي بقا وتعقلي يرب ويهديكي عليا  بعمل مصايب من غير معرفها دي وبجد بجد فعلن بمووت فيكي وبحبك عمتاا 😍"
+                        </p>
+                    </div>
+                    <div class="text-right text-xs font-bold opacity-60 mt-4">Oct 1st • Forever Friends</div>
+                </div>
+                <!-- Pre-filled Wish Card 3 -->
+                <div class="card-wish-purple p-6 rounded-2xl shadow-sm border border-white/60 relative flex flex-col justify-between min-h-[160px]">
+                    <div>
+                        <div class="text-xs font-black text-amber-700 uppercase tracking-wider mb-2">From JANA 🌟</div>
+                        <p class="text-sm text-slate-800 font-medium leading-relaxed">
+                        "Happy BirthDay Emaaaan!!💖كل سنه وانتي طيبه ياقلبي وعقبال 1000000 سنه كل سنه واحنا صحاب 💖دايما بنتخانق ونتقمص من بعض ونراظي في بعض واوقات بنقعد كتير مبنكلمش بعض بس بنرجع نتصالح علشان كدا اسمنا صحاب يا ما زعلنا و اتخنقنا بس بنرجع زي الاول واحسن كل سنه وانتي اجمل واحن ايمان في الدنيا ""
+                        </p>
+                    </div>
+                    <div class="text-right text-xs font-bold opacity-60 mt-4">Oct 1st • Forever Friends</div>
+                </div>
+                <!-- Pre-filled Wish Card 3 -->
+                <div class="card-wish-yellow p-6 rounded-2xl shadow-sm border border-white/60 relative flex flex-col justify-between min-h-[160px]">
+                    <div>
+                        <div class="text-xs font-black text-amber-700 uppercase tracking-wider mb-2">From SHAMS 🌟</div>
+                        <p class="text-sm text-slate-800 font-medium leading-relaxed">
+                            "كل سنة وانتِ طيبة يا حبيبي والسنة دي ان شاء الله تحققي كل اللي بتتمنيه واشوفك أشطر بروجرامر 🫶🫶🎀
+From shamosa🎀"
+                        </p>
+                    </div>
+                    <div class="text-right text-xs font-bold opacity-60 mt-4">Oct 1st • Forever Friends</div>
+                </div>
+                <!-- Pre-filled Wish Card 3 -->
+                <div class="card-wish-pink p-6 rounded-2xl shadow-sm border border-white/60 relative flex flex-col justify-between min-h-[160px]">
+                    <div>
+                        <div class="text-xs font-black text-amber-700 uppercase tracking-wider mb-2">From SOUNDOS 🌟</div>
+                        <p class="text-sm text-slate-800 font-medium leading-relaxed">
+                            " كل سنه وانتي يا اجمل موني ف الدنيا والله اجمل حد ف الدنيا وبحب رخمتك عليا ونفضل كدا دايما نرخم علي بعض دايما علي قلبي زي العسل والله وبتمنالك كل حاجه جميله ف الدنيا ويارب تحققي كل الي نفسك فيه كدا ونفضل صحاب و نرخم علي بعض كدا علي طول ونتكلم علي كل الناس كدا بحبك موتتتتتت موتتت بجد"
+                        </p>
+                    </div>
+                    <div class="text-right text-xs font-bold opacity-60 mt-4">Oct 1st • Forever Friends</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-card rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 rounded-full bg-rose-500/20 text-rose-600 flex items-center justify-center text-2xl font-bold shadow-sm">💌</div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800">A Special Birthday Letter for EMAN</h2>
+                    <p class="text-xs text-rose-500 font-bold uppercase tracking-wider">Written with affection & best wishes</p>
+                </div>
+            </div>
+
+            <div class="prose max-w-none text-slate-700 leading-relaxed space-y-4">
+                <p class="text-2xl sm:text-3xl font-handwriting text-rose-600 font-bold">
+                  💌 A Special Birthday Letter for EMAN <br>
+Dear EMAN, ❤️
+                </p>
+                <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-medium">
+
+Happy 18th Birthday! 🎂🎉
+I hope this new year of your life brings you lots of happiness, love, and success.
+May all your dreams come true, and may every day bring you a new reason to smile. ✨
+You are such a special and wonderful person, and I’m really happy to celebrate this beautiful day with you. ❤️
+I hope you always stay happy, strong, and surrounded by people who love you.
+May your future be full of beautiful memories, exciting moments, and everything you wish for. 🌷
+Never stop smiling and always believe in yourself.
+Happy Birthday, EMAN! ❤️🎉
+Wishing you a beautiful year filled with love, joy, and unforgettable moments. ✨
+                </p>
+                <p class="text-right font-handwriting text-2xl sm:text-3xl text-rose-600 font-bold mt-6">
+With love and best wishes. 💕
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Wish Granted Popup Modal -->
+    <div id="wishModal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 max-w-md w-full text-center relative transform scale-90 transition-transform duration-300 id-modal-content">
+            <button onclick="closeWishModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-2xl font-bold">&times;</button>
+            <div class="text-6xl mb-3">🌠</div>
+            <h3 class="text-2xl font-extrabold mb-1 text-slate-800">Wish Granted for EMAN!</h3>
+            <p class="text-xs font-bold text-rose-500 uppercase tracking-widest mb-4">Official 18th Birthday Blessing</p>
+            <p class="font-handwriting text-2xl text-rose-600 font-bold mb-6">
+                "May your 18th year bring you boundless joy, success in every endeavor, and memories that last a lifetime!"
+            </p>
+            <button onclick="triggerConfetti(); closeWishModal();" class="w-full py-3.5 rounded-2xl bg-rose-500 hover:bg-rose-600 text-white font-extrabold shadow-lg shadow-rose-500/30 text-sm">
+                Shower Confetti & Celebrate! 🎊
+            </button>
+        </div>
+    </div>
+
+    <footer class="mt-auto py-6 text-center text-xs font-bold opacity-70 z-10">
+        Crafted with ❤️ specially for EMAN's 18th Birthday Celebration
+    </footer>
+
+    <script>
+        let candlesBlown = false;
+        let isAudioPlaying = false;
+        let audioCtx = null;
+
+        /* Grand Surprise Intro Trigger */
+        function revealSurprise() {
+            const overlay = document.getElementById('introOverlay');
+            overlay.style.opacity = '0';
+            overlay.style.visibility = 'hidden';
+
+            triggerConfetti();
+            playSynthesizedSound(523.25, 0.4); // C5
+            setTimeout(() => playSynthesizedSound(659.25, 0.5), 200); // E5
+            setTimeout(() => playSynthesizedSound(783.99, 0.6), 400); // G5
+        }
+
+        /* Sparkle Cursor Animation */
+        document.addEventListener('mousemove', function(e) {
+            if (Math.random() < 0.1) {
+                const sparkle = document.createElement('span');
+                sparkle.className = 'sparkle-trail';
+                sparkle.innerHTML = ['✨', '💖', '🌸', '🌟', '🎉'][Math.floor(Math.random() * 5)];
+                sparkle.style.left = e.clientX + 'px';
+                sparkle.style.top = e.clientY + 'px';
+                
+                const dx = (Math.random() - 0.5) * 60 + 'px';
+                const dy = (Math.random() - 0.5) * 60 - 20 + 'px';
+                sparkle.style.setProperty('--dx', dx);
+                sparkle.style.setProperty('--dy', dy);
+
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 1100);
+            }
+        });
+
+        /* Confetti Burst */
+        function triggerConfetti() {
+            confetti({
+                particleCount: 130,
+                spread: 90,
+                origin: { y: 0.6 }
+            });
+        }
+
+        /* Blow Candles Physics */
+        function blowOutCandles() {
+            if (candlesBlown) return;
+            candlesBlown = true;
+
+            const flames = document.querySelectorAll('.flame');
+            flames.forEach((flame, index) => {
+                setTimeout(() => {
+                    flame.classList.add('out');
+                    const smoke = document.createElement('div');
+                    smoke.className = 'smoke';
+                    flame.parentElement.appendChild(smoke);
+                }, index * 200);
+            });
+
+            document.getElementById('blowBtn').innerText = "✨ Wish Sent to the Stars!";
+            document.getElementById('wishStatus').classList.remove('hidden');
+
+            setTimeout(() => {
+                const modal = document.getElementById('wishModal');
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.querySelector('.id-modal-content').classList.remove('scale-90');
+                modal.querySelector('.id-modal-content').classList.add('scale-100');
+                triggerConfetti();
+            }, 600);
+        }
+
+        function closeWishModal() {
+            const modal = document.getElementById('wishModal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('.id-modal-content').classList.remove('scale-100');
+            modal.querySelector('.id-modal-content').classList.add('scale-90');
+        }
+
+        /* Friend Wishes Card Wall Logic */
+        function toggleWishForm() {
+            const form = document.getElementById('wishFormContainer');
+            form.classList.toggle('hidden');
+        }
+
+        function postWishCard() {
+            const name = document.getElementById('friendName').value.trim() || 'A Dear Friend';
+            const message = document.getElementById('friendMessage').value.trim();
+            const color = document.getElementById('cardColor').value;
+
+            if (!message) {
+                alert('Please type a message for EMAN!');
+                return;
+            }
+
+            const cardObj = { name, message, color, date: 'Oct 1st' };
+            saveWishToStorage(cardObj);
+            renderWishCard(cardObj);
+
+            document.getElementById('friendName').value = '';
+            document.getElementById('friendMessage').value = '';
+            toggleWishForm();
+            triggerConfetti();
+        }
+
+        function renderWishCard(wish) {
+            const grid = document.getElementById('wishesGrid');
+            const card = document.createElement('div');
+            const colorClass = `card-wish-${wish.color || 'pink'}`;
+            
+            card.className = `${colorClass} p-6 rounded-2xl shadow-sm border border-white/60 relative flex flex-col justify-between min-h-[160px] animate-fade-in`;
+            card.innerHTML = `
+                <div>
+                    <div class="text-xs font-black text-rose-600 uppercase tracking-wider mb-2">From ${wish.name} 💖</div>
+                    <p class="text-sm text-slate-800 font-medium leading-relaxed">"${wish.message}"</p>
+                </div>
+                <div class="text-right text-xs font-bold opacity-60 mt-4">${wish.date} • Birthday Wish</div>
+            `;
+            grid.prepend(card);
+        }
+
+        function saveWishToStorage(wish) {
+            let saved = JSON.parse(localStorage.getItem('eman_wishes') || '[]');
+            saved.push(wish);
+            localStorage.setItem('eman_wishes', JSON.stringify(saved));
+        }
+
+        function loadSavedWishes() {
+            let saved = JSON.parse(localStorage.getItem('eman_wishes') || '[]');
+            saved.forEach(wish => renderWishCard(wish));
+        }
+
+        /* Custom Photo Upload Handler */
+        function uploadCustomPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const grid = document.getElementById('photoGrid');
+                    const photoDiv = document.createElement('div');
+                    photoDiv.className = 'polaroid rounded-2xl w-full max-w-xs';
+                    photoDiv.style.setProperty('--rot', (Math.random() * 4 - 2) + 'deg');
+                    photoDiv.innerHTML = `
+                        <div class="w-full h-56 rounded-xl overflow-hidden mb-3 border border-slate-100">
+                            <img src="${e.target.result}" alt="Eman Custom Photo" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-center font-handwriting text-2xl text-slate-800 font-bold">
+                            Cherished Memory ✨
+                        </div>
+                    `;
+                    grid.prepend(photoDiv);
+                    triggerConfetti();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        /* Web Audio Synthesizer */
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playSynthesizedSound(freq, duration) {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        function toggleAudio() {
+            const musicText = document.getElementById('musicText');
+            if (isAudioPlaying) {
+                isAudioPlaying = false;
+                musicText.innerText = "Play Music";
+            } else {
+                isAudioPlaying = true;
+                musicText.innerText = "Pause Music";
+                playMelodyLoop();
+            }
+        }
+
+        function playMelodyLoop() {
+            if (!isAudioPlaying) return;
+            const notes = [
+                { f: 261.63, d: 0.3 }, { f: 261.63, d: 0.3 }, { f: 293.66, d: 0.5 }, { f: 261.63, d: 0.5 }, { f: 349.23, d: 0.5 }, { f: 329.63, d: 0.8 },
+                { f: 261.63, d: 0.3 }, { f: 261.63, d: 0.3 }, { f: 293.66, d: 0.5 }, { f: 261.63, d: 0.5 }, { f: 392.00, d: 0.5 }, { f: 349.23, d: 0.8 }
+            ];
+            let idx = 0;
+            function step() {
+                if (!isAudioPlaying) return;
+                playSynthesizedSound(notes[idx].f, notes[idx].d);
+                idx = (idx + 1) % notes.length;
+                setTimeout(step, 550);
+            }
+            step();
+        }
+
+        /* Age & Days Calculator */
+        function updateStats() {
+            const birthDate = new Date(2008, 9, 1); // Oct 1, 2008
+            const now = new Date();
+            const diffTime = Math.abs(now - birthDate);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('daysCount').innerText = diffDays.toLocaleString();
+
+            let nextBirthday = new Date(now.getFullYear(), 9, 1);
+            if (now > nextBirthday) {
+                nextBirthday.setFullYear(now.getFullYear() + 1);
+            }
+            const timeTillNext = nextBirthday - now;
+            const daysTillNext = Math.ceil(timeTillNext / (1000 * 60 * 60 * 24));
+            document.getElementById('countdownDays').innerText = daysTillNext === 0 ? "TODAY! 🎉" : daysTillNext;
+        }
+
+        window.onload = function() {
+            updateStats();
+            loadSavedWishes();
+        };
+    </script>
+</body>
+</html>
